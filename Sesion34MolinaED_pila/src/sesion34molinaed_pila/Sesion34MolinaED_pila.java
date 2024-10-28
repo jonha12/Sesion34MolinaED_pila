@@ -19,6 +19,8 @@ public class Sesion34MolinaED_pila {
         pilaMolina.push(10);
         pilaMolina.push(100);
         JOptionPane.showInternalMessageDialog(null,"Datos de la pila ordenada son: "+pilaMolina);
+        JOptionPane.showInternalMessageDialog(null,"Autor: Jonathan MOlina");
+        
     }
 
 }
