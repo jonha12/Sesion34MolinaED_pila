@@ -1,16 +1,21 @@
-
 package vista;
 
+import conexion.ConectarBD;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
 
 public class Login extends javax.swing.JFrame {
 
-  
+    ConectarBD con = new ConectarBD();
+
     public Login() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -38,6 +43,12 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Usuario");
+
+        txtUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsuarioActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
@@ -136,10 +147,40 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+        String usuario = txtUsuario.getText();
+        String password = new String(txtPass.getPassword());
+
+        try {
+            con.conectarBDOracle();
+            // Consulta SQL usando PreparedStatement para evitar inyección de SQL
+            String consultasql = "SELECT * FROM usuarios WHERE username = ? AND password = ?";
+            PreparedStatement pstmt = con.getConnection().prepareStatement(consultasql);
+            pstmt.setString(1, usuario);
+            pstmt.setString(2, password);
+
+            con.rs = pstmt.executeQuery(); // Ejecuta la consulta
+            if (con.rs.next()) {
+                // Usuario y contraseña coinciden
+                JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso.");
+                Sistema abrirVentanaSistema = new Sistema();
+                abrirVentanaSistema.setVisible(true);
+                this.setVisible(false);
+            } else {
+                // No se encontró ningún resultado, usuario o contraseña incorrectos
+                JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecta.");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error en la base de datos\n" + ex);
+        }
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
-   
+    private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
+
+    }//GEN-LAST:event_txtUsuarioActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

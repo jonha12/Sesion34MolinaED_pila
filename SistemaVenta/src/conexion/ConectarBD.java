@@ -1,15 +1,18 @@
 
 package conexion;
 
-import java.sql.Connection; //Establecer conexion a BD
-import java.sql.DriverManager; // Enlase de conexion entre BD y Java
-import java.sql.Statement; // Genera sentencias SQL
-import java.sql.ResultSet; //Establece resultado final de datos
-import java.sql.SQLException; //Tratamiento de errores de BD
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
+
 public class ConectarBD {
     
-   public Connection cn;
+     public Connection cn;
     public Statement stmt;
     public ResultSet rs;
     
@@ -18,8 +21,16 @@ public class ConectarBD {
     public void conectarBDOracle() throws SQLException{
     
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-    cn=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","sistemaventas","uacm123");
+    cn=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","sistemaventa","uacm123");
         stmt= cn.createStatement();
-        JOptionPane.showMessageDialog(null, "Conexion a BD OK!!!!\n\nMolina");
+    }
+    
+    public Connection getConnection() {
+        return cn;
+    }
+
+    public void rs() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
-}
+
